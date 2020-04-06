@@ -11,7 +11,8 @@ export default class Todo extends Component {
         super(props);
         this.state = {
             description: '',
-            list: []
+            list: [],
+            editItem: null
         }
         this.handleAdd = this.handleAdd.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -19,6 +20,7 @@ export default class Todo extends Component {
         this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
         this.handleMarkAsPending = this.handleMarkAsPending.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.refresh();
     }
 
@@ -34,12 +36,22 @@ export default class Todo extends Component {
 
     handleAdd() {
         const description = this.state.description
-        axios.post(URL, { description })
-            .then(resp => {
-                alert('ToDo adicionado com sucesso!');
-                this.refresh();
-            })
-            .catch(error => console.log('Erro ao tentar adicionar tarefas!'));
+        if (this.state.editItem) {
+            axios.put(`${URL}/${this.state.editItem._id}`, { description: this.state.description })
+                .then(resp => {
+                    this.setState({ ...this.state, description: '', editItem: null });
+                    alert('ToDo alterado com sucesso!');
+                    this.refresh();
+                })
+                .catch(error => console.log('Erro ao tentar alterar tarefa!'));
+        } else {
+            axios.post(URL, { description })
+                .then(resp => {
+                    alert('ToDo adicionado com sucesso!');
+                    this.refresh();
+                })
+                .catch(error => console.log('Erro ao tentar adicionar tarefas!'));
+        }
     }
 
     handleRemove(item) {
@@ -78,6 +90,10 @@ export default class Todo extends Component {
             });
     }
 
+    handleEdit(item) {
+        this.setState({ ...this.state, editItem: item, description: item.description });
+    }
+
     handleSearch() {
         this.refresh(this.state.description);
     }
@@ -93,7 +109,8 @@ export default class Todo extends Component {
                 <TodoList list={this.state.list}
                     handleRemove={this.handleRemove}
                     handleMarkAsDone={this.handleMarkAsDone}
-                    handleMarkAsPending={this.handleMarkAsPending}></TodoList>
+                    handleMarkAsPending={this.handleMarkAsPending}
+                    handleEdit={this.handleEdit}></TodoList>
             </div>
         )
     }

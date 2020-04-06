@@ -21,6 +21,9 @@ export default props => {
                     <IconButton style='warning' icon='undo' hide={!item.done}
                         onClick={() => props.handleMarkAsPending(item)}>
                     </IconButton>
+                    <IconButton style='warning' icon='edit'
+                        onClick={() => props.handleEdit(item)}>
+                    </IconButton>
                     <IconButton style='danger' icon='trash-o'
                         onClick={() => props.handleRemove(item)}>
                     </IconButton>
