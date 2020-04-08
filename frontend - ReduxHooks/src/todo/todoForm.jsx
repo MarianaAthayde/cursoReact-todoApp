@@ -1,57 +1,53 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import Grid from '../template/grid';
 import IconButton from '../template/iconButton';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
 import { handleChange, updateList, add } from '../actions/todoAction';
 
 const URL = 'http://localhost:3003/api/todos';
 
-class TodoForm extends Component {
-    constructor(props) {
-        super(props);
+function TodoForm(props) {
+    // constructor(props) {
+    //     super(props);
 
-        this.keyHandle = this.keyHandle.bind(this);
-    }
+    //     this.keyHandle = this.keyHandle.bind(this);
+    // }
 
-    keyHandle(e) {
-        switch (e.key) {
-            case 'Enter': e.shiftKey ? this.props.updateList() : this.props.add(this.props.description); break;
-        }
-    };
+    useEffect(() => {
+        props.updateList();
+        return;
+    },
+        []
+    );
 
-    componentWillMount() {
-        this.props.updateList();
-    }
+    const description = useSelector(state => state.todo.description);
 
-    render() {
-        return (
-            <div role='form' className='todoForm' >
-                <Grid cols='12 9 10'>
-                    <input id='description' className='form-control' placeholder='Adicione uma tarefa'
-                        value={this.props.description}
-                        onChange={(event) => this.props.handleChange(event.target.value)}
-                        onKeyUp={this.keyHandle}
-                    ></input>
-                </Grid>
-                <Grid cols='12 3 2'>
-                    <IconButton style='primary' icon='plus' onClick={() => this.props.add(this.props.description)}></IconButton>
-                    <IconButton style='info' icon='search' onClick={this.props.updateList}></IconButton>
-                </Grid>
-            </div>
-        )
-    }
-};
+    // keyHandle(e) {
+    //     switch (e.key) {
+    //         case 'Enter': e.shiftKey ? this.props.updateList() : this.props.add(description); break;
+    //     }
+    // };
 
-function mapStateToProps(state) {
-    return ({
-        description: state.todo.description
-    })
+    return (
+        <div role='form' className='todoForm' >
+            <Grid cols='12 9 10'>
+                <input id='description' className='form-control' placeholder='Adicione uma tarefa'
+                    value={description}
+                    onChange={(event) => props.handleChange(event.target.value)}
+                // onKeyUp={this.keyHandle}
+                ></input>
+            </Grid>
+            <Grid cols='12 3 2'>
+                <IconButton style='primary' icon='plus' onClick={() => props.add(description)}></IconButton>
+                <IconButton style='info' icon='search' onClick={props.updateList}></IconButton>
+            </Grid>
+        </div>
+    )
 };
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ handleChange, updateList, add }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoForm)
+export default connect(null, mapDispatchToProps)(TodoForm)

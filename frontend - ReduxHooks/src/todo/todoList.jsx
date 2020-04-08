@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import IconButton from '../template/iconButton';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { handleEditItem, remove, handleStatus } from '../actions/todoAction';
 
 export default function TodoList() {
