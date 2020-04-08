@@ -14,11 +14,6 @@ export default function TodoForm(props) {
     //     this.keyHandle = this.keyHandle.bind(this);
     // }
 
-    // keyHandle(e) {
-    //     switch (e.key) {
-    //         case 'Enter': e.shiftKey ? this.props.updateList() : this.props.add(description); break;
-    //     }
-    // };
 
     const description = useSelector(state => state.todo.description);
     const dispatch = useDispatch();
@@ -42,13 +37,19 @@ export default function TodoForm(props) {
         dispatch(updateList());
     }
 
+    function keyHandle(e) {
+        switch (e.key) {
+            case 'Enter': e.shiftKey ? updateListF() : addF(description); break;
+        }
+    };
+
     return (
         <div role='form' className='todoForm' >
             <Grid cols='12 9 10'>
                 <input id='description' className='form-control' placeholder='Adicione uma tarefa'
                     value={description}
                     onChange={(event) => handleChangeF(event.target.value)}
-                // onKeyUp={this.keyHandle}
+                    onKeyUp={(event) => keyHandle(event)}
                 ></input>
             </Grid>
             <Grid cols='12 3 2'>
