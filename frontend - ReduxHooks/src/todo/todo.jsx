@@ -11,7 +11,7 @@ export default props => {
         <div>
             <PageHeader name='Tarefas' small='Cadastro'></PageHeader>
             <TodoForm />
-            <TodoList />
+            <TodoList><br /><br /><hr /></TodoList>
         </div>
     )
 };

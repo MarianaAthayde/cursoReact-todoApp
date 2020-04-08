@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import IconButton from '../template/iconButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { handleEditItem, remove, handleStatus } from '../actions/todoAction';
 
-export default function TodoList() {
+export default props => {
     const listRedux = useSelector(state => state.todo.list);
     const dispatch = useDispatch();
 
@@ -49,21 +49,24 @@ export default function TodoList() {
     };
 
     return (
-        <table className='table'>
-            <thead>
-                <tr>
-                    <th>
-                        Descrição
+        <Fragment>
+            {props.children}
+            <table className='table'>
+                <thead>
+                    <tr>
+                        <th>
+                            Descrição
                     </th>
-                    <th>
-                        Status
+                        <th>
+                            Status
                     </th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {renderRows()}
-            </tbody>
-        </table>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {renderRows()}
+                </tbody>
+            </table>
+        </Fragment>
     );
 };

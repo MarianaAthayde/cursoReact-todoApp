@@ -1,20 +1,10 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Grid from '../template/grid';
 import IconButton from '../template/iconButton';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { handleChange, updateList, add } from '../actions/todoAction';
 
-const URL = 'http://localhost:3003/api/todos';
-
-export default function TodoForm(props) {
-    // constructor(props) {
-    //     super(props);
-
-    //     this.keyHandle = this.keyHandle.bind(this);
-    // }
-
-
+export default props => {
     const description = useSelector(state => state.todo.description);
     const dispatch = useDispatch();
 
@@ -45,6 +35,7 @@ export default function TodoForm(props) {
 
     return (
         <div role='form' className='todoForm' >
+            {props.children}
             <Grid cols='12 9 10'>
                 <input id='description' className='form-control' placeholder='Adicione uma tarefa'
                     value={description}
